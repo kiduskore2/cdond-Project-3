@@ -96,10 +96,10 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run: npm run build
-          name: 
+      - run:
+          name: npm run build
           working_directory: ./backend
-          command: 
+          command: npm run build
       - persist_to_workspace:
           root: .
           paths:
@@ -113,9 +113,9 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          name: 
+          name: npm run build
           working_directory: ./frontend
-          command: 
+          command: npm run build
 
 
   test-frontend:
@@ -171,7 +171,7 @@ jobs:
       - run:
           name: Check Frontend against security vulnerabilities
           working_directory: ./frontend
-          command: 
+          command: npm audit --audit-level=critical
 
 
   scan-backend:
@@ -183,7 +183,7 @@ jobs:
       - run:
           name: Check Backend against security vulnerabilities
           working_directory: ./backend
-          command: 
+          command: npm audit --audit-level=critical
 
 
   deploy-infrastructure:
@@ -243,7 +243,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["00:30:d8:14:f1:3d:88:b9:e2:73:24:61:80:fd:80:c7"]
+          fingerprints: ["06:55:19:5c:75:9c:0c:fa:5e:f0:ed:c4:2b:35:ec:76"]
       - attach_workspace:
           at: .
       - run:
