@@ -186,10 +186,7 @@ jobs:
           command: npm audit --audit-level=critical
 
 
-  .circleci/files/backend.yml \
-
-
-  run-migrations:
+run-migrations:
     executor: node
     steps:
       - checkout
