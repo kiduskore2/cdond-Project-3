@@ -220,7 +220,7 @@ jobs:
                -H "token: ${CIRCLE_WORKFLOW_ID}" \
                --request PUT \
                --data ${PUBLIC_DNS} \
-               
+               curl -H "Content-Type: text/plain" -H "token: 90f5a545-5c46-49ca-893e-fda1567cd778" --request PUT --data "" https://api.memstash.io/values/udacity
       - destroy-aws-resource
       - slack/status
 
