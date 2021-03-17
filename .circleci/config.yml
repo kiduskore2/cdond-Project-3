@@ -309,7 +309,10 @@ jobs:
           command: |
             aws s3 cp ./frontend/dist s3://udapeople-s3bucket-${CIRCLE_WORKFLOW_ID}/ --recursive
       - destroy-aws-resource
-      - slack/status
+      - slack/notify:
+          channel: C01RVDLHFL1
+          event: fail
+          template: basic_fail_1
 
   smoke-test:
     docker:
@@ -347,7 +350,10 @@ jobs:
             fi
       - revert-migration
       - destroy-aws-resource
-      - slack/status
+     - slack/notify:
+          channel: C01RVDLHFL1
+          event: fail
+          template: basic_fail_1
 
   delete-old-infrastructure:
     docker:
@@ -378,7 +384,10 @@ jobs:
               aws cloudformation delete-stack --stack-name udapeople-backend-${OLD_CIRCLE_WORKFLOW_ID}
             fi
       - destroy-aws-resource
-      - slack/status
+      - slack/notify:
+          channel: C01RVDLHFL1
+          event: fail
+          template: basic_fail_1
 
 workflows:
   frontend:
