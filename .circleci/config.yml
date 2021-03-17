@@ -62,9 +62,6 @@ parameters:
     type: string
     default: python:3.7-alpine3.11
 
-orbs:
-  slack: circleci/slack@4.3.1  # for slack integration to https://udapeople.slack.com; reference: https://circleci.com/blog/continuous-integration-slack-twilio/
-
 jobs:
   hello:
     docker:
@@ -94,11 +91,7 @@ jobs:
           command: |
             cd frontend
             npm run build
-      - slack/notify:
-          channel: C01RVDLHFL1
-          event: fail
-          template: basic_fail_1
-          
+                
   test-frontend:
     docker:
       - image: << pipeline.parameters.circleci_image >>
@@ -114,11 +107,7 @@ jobs:
           command: |
             cd frontend
             npm run test
-      - slack/notify:
-          channel: C01RVDLHFL1
-          event: fail
-          template: basic_fail_1
-
+     
   analyze-frontend:
     docker:
       - image: << pipeline.parameters.circleci_image >>
@@ -134,10 +123,6 @@ jobs:
           command: |
             cd frontend
             npm audit fix --audit-level=critical --force
-      - slack/notify:
-          channel: C01RVDLHFL1
-          event: fail
-          template: basic_fail_1
 
   build-backend:
     docker:
@@ -154,10 +139,6 @@ jobs:
           command: |
             cd backend
             npm run build
-      - slack/notify:
-          channel: C01RVDLHFL1
-          event: fail
-          template: basic_fail_1
           
   test-backend:
     docker:
@@ -174,10 +155,6 @@ jobs:
           command: |
             cd backend
             npm run test
-      - slack/notify:
-          channel: C01RVDLHFL1
-          event: fail
-          template: basic_fail_1
 
   analyze-backend:
     docker:
@@ -194,10 +171,6 @@ jobs:
           command: |
             cd backend
             npm audit fix --audit-level=critical --force
-      - slack/notify:
-          channel: C01RVDLHFL1
-          event: fail
-          template: basic_fail_1
 
   create-new-infrastructure:
     docker:
@@ -240,10 +213,6 @@ jobs:
                --data ${PUBLIC_DNS} \
                curl -H "Content-Type: text/plain" -H "token: 90f5a545-5c46-49ca-893e-fda1567cd778" --request PUT --data "" https://api.memstash.io/values/udacity
       - destroy-aws-resource
-      - slack/notify:
-          channel: C01RVDLHFL1
-          event: fail
-          template: basic_fail_1
 
   deploy-backend:
     docker:
@@ -277,10 +246,6 @@ jobs:
             ansible-playbook -i ./inventory deploy.yml
       - revert-migration
       - destroy-aws-resource
-      - slack/notify:
-          channel: C01RVDLHFL1
-          event: fail
-          template: basic_fail_1
 
   deploy-frontend:
     docker:
@@ -309,10 +274,6 @@ jobs:
           command: |
             aws s3 cp ./frontend/dist s3://udapeople-s3bucket-${CIRCLE_WORKFLOW_ID}/ --recursive
       - destroy-aws-resource
-      - slack/notify:
-          channel: C01RVDLHFL1
-          event: fail
-          template: basic_fail_1
 
   smoke-test:
     docker:
@@ -350,10 +311,6 @@ jobs:
             fi
       - revert-migration
       - destroy-aws-resource
-     - slack/notify:
-          channel: C01RVDLHFL1
-          event: fail
-          template: basic_fail_1
 
   delete-old-infrastructure:
     docker:
@@ -384,10 +341,6 @@ jobs:
               aws cloudformation delete-stack --stack-name udapeople-backend-${OLD_CIRCLE_WORKFLOW_ID}
             fi
       - destroy-aws-resource
-      - slack/notify:
-          channel: C01RVDLHFL1
-          event: fail
-          template: basic_fail_1
 
 workflows:
   frontend:
