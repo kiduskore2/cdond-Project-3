@@ -19,7 +19,7 @@ commands:
           command: |
             if aws cloudformation wait stack-exists --stack-name udapeople-cloudfront
             then 
-              aws cloudformation delete-stack --stack-name udapeople-cloudfront
+              aws cloudformation delete-stack --stack-name udapeople-clouodfront
             fi
             if aws cloudformation wait stack-exists --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID}
             then 
