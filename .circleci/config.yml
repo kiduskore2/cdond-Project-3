@@ -9,7 +9,7 @@ commands:
       - run:
           name: Delete all files in the current S3 bucket
           command: |
-            if aws s3api head-bucket --bucket udapeople-kk1j287dhjppmz1992t-${CIRCLE_WORKFLOW_ID}
+            if aws s3api head-bucket --bucket udapeople-kk1j287dhjppmz1992-${CIRCLE_WORKFLOW_ID}
             then
               aws s3 rm s3://udapeople-kk1j287dhjppmz1992-${CIRCLE_WORKFLOW_ID}/ --recursive
             fi
@@ -272,7 +272,8 @@ jobs:
       - run: 
           name: Copy built frontend files to the S3 bucket
           command: |
-            aws s3 cp ./frontend/dist s3://udapeople-kk1j287dhjppmz1992-${ID}"-${CIRCLE_WORKFLOW_ID}"/ --recursive
+            cd ~/project/frontend
+            aws s3 cp dist s3://udapeople-kk1j287dhjppmz199-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - destroy-aws-resource
 
   smoke-test:
