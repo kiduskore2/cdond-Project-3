@@ -247,33 +247,26 @@ jobs:
       - revert-migration
       - destroy-aws-resource
 
-  deploy-frontend:
+  deploy_frontend_artifact:
     docker:
-      - image: << pipeline.parameters.py_alp_image >>
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - run:
-          name: Install system dependencies
+          name: Install dependencies
           command: |
-            apk add --no-cache curl
-            apk add --no-cache --upgrade bash
-            apk add --no-cache --update npm
-            pip3 install awscli
+            apk add --update curl tar
+            pip install awscli
+      - attach_workspace:
+          at: ~/
       - run:
-          name: Build the frontend
+          name: Copy frontend to s3 bucket.
           command: |
-            PUBLIC_DNS=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/public_dns)
-            echo ${PUBLIC_DNS}
-            export API_URL="http://${PUBLIC_DNS}:3030"
-            echo API_URL=${API_URL}
-            cd frontend
-            npm install
-            npm run build
-      - run: 
-          name: Copy built frontend files to the S3 bucket
-          command: |
-            aws s3 cp ./frontend/dist s3://udapeople-s3bucket-frontend-${ID}"-${CIRCLE_WORKFLOW_ID}"/ --recursive
-      - destroy-aws-resource
+            cd ~/project/frontend
+            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+      - destroy_environment:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - undo_migrations
 
   smoke-test:
     docker:
