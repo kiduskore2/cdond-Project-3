@@ -247,7 +247,7 @@ jobs:
       - revert-migration
       - destroy-aws-resource
 
-deploy-frontend:
+  deploy-frontend:
     docker:
       - image: << pipeline.parameters.py_alp_image >>
     steps:
